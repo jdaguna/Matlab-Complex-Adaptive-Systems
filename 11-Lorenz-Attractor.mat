@@ -1,0 +1,20 @@
+clear %clear all variables stored 
+ 
+sig = 10; %sets sigma to 10
+beta = 8/3; %sets beta to 8/3
+param = 28; %sets paramater to 28
+ 
+x=rand*20-10 %x is set to rand number between -10 and 10
+y=rand*20-10 %y is set to rand number between -10 and 10
+z=rand*20-10 %z is set to rand number between -10 and 10
+ 
+for t=1:5000 %for loop of t runs from 1 to 5000
+    x=(sig*(y-x))*.01+x; %derivative of x, (lorenz equations) scaled by .01, plus x
+    y=(x*(param-z)-y)*.01+y;%derivative of y, (lorenz equations) scaled by .01, plus y
+    z=(x*y-beta*z)*.01+z;%derivative of z, (lorenz equations) scaled by .01, plus z
+    allx(t)=x; %saves value of x, in allx
+    ally(t)=y; %saves value of y, in ally
+    allz(t)=z; %saves value of z, in allz
+end
+ 
+plot3(allx,ally,allz); %Make a 3-D plot of allx, ally, and allz

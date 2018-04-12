@@ -1,0 +1,27 @@
+clear
+epochs = 0; %the counter will record the number of training trials that takes place, initial value is zero
+Inputs = eye(4); %this gives the matrix of the pattern [1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1]
+Targets= [1 0; 1 0; 0 1; 0 1]; %introduce a matrix of four horizontal target output vectors
+mse = 131313131313131313131313131313; %introduce a variable that will record the mean squared error of the model's performance, set it to high number
+Lrate = .1;%this learning rate is used later on
+w = -1 +(2).*rand(4,2);%make a 4,2 matrix of random weights between -1 and 1
+ 
+ 
+while mse>.5 %Start a "while loop" that will continue as long as mse is greater than .05.
+    epochs = epochs + 1;%increment the value of "epochs" by 1 for each iteration of the loop
+        for n=1:4 %start a "for loop" in which "n" goes from 1 to 4.
+        In = Inputs(n,:);%sets the in variable to all the elements in the nth row of Inputs
+        Targ = Targets(n,:);%sets the Targ variable to all the elements in the nth row of Targets
+        Out = In * w;%matrix multiplication of In and W
+        Err = Targ - Out; %compute the error by subtracting the outut activtions from Targ
+        errs(n)=((Err(1)^2+Err(2)^2))/2; %squares err 1 and 2 and computing mean. saving it in errs(n)
+        delta=(Err'*In)'*Lrate; %this is the delta rule, scaled by the weights in learning rate 
+        w=w+delta; %adjust the weight matrix by delta
+        end
+        
+    mse=mean(errs)%computese mean squared errors as the average of errs  
+    v(epochs) = mse %make a vector in which the epochth element equals the mean square error.
+end
+ 
+epochs
+plot(v); %make a line graph of the mean squared errors after each epoch

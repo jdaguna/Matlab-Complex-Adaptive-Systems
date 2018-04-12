@@ -1,0 +1,51 @@
+clear
+epochs=0;
+mse=15;
+a=.9;%alpha term for momentum
+Lrate=.1;
+Inputs=[0, 0; 1, 0; 0, 1; 1, 1];
+Targets=[0; 1; 1; 0];
+ 
+Weight1=rand(2,2)*2-1;%random weight matrix
+Weight2=rand(2,1)*2-1; %random weight matrix
+ 
+BiasH=rand(1,2)*2-1; %bias for hidden layer
+BiasO=rand(1,1)*2-1; %bias for output layer
+chW1=zeros(2,2); %change for weight 
+chW2=zeros(2,1); 
+chBiasH=[0 0];  %change for bias hidden
+chBiasO=[0];    %change for bias output
+while (mse>.01 && epochs<5000);
+    epochs=epochs+1;
+    for n=1:4;%we are using 4 I/O patterns
+        In=Inputs(n,:);
+        Targ=Targets(n,:);
+       
+        actHidden=1./(1+(exp(-(In*Weight1+BiasH)))); %hidden layer activations
+        actOutput=1./(1+(exp(-(actHidden*Weight2+BiasO)))); %output layer activations
+                
+        Err= Targ-actOutput; %calculate error
+         errs(n)=Err.^2;
+               
+        deltaOut=(Err).*(actOutput.*(1-actOutput)); %delta for output
+        deltaHid=(actHidden.*(1-actHidden).*(Weight2'*deltaOut)); %delta for hidden
+        
+        Weight1=Weight1+a*chW1; 
+        Weight2=Weight2+a*chW2; 
+        BiasH=BiasH+a*chBiasH; %node for hidden
+        BiasO=BiasO+a*chBiasO; %node for output
+    
+        chW1=(Lrate*(In'*deltaHid));%weight1 changes
+        chW2=(Lrate*(actHidden'*deltaOut));%weight2 changes
+        chBiasH=(Lrate*(deltaHid));
+        chBiasO=(Lrate*(deltaOut));
+        
+        Weight1=Weight1+chW1;%finds new weight1 
+        Weight2=Weight2+chW2;%finds new weight2
+        BiasH=BiasH+mBiasH; %changes bias for hidden
+        BiasO=BiasO+mBiasO; %changes bias for output
+    end
+    mse=mean(errs); %compute the mse for all four I/O patterns
+    v(epochs)=mse;
+end
+plot (v) %plot mse over epochs

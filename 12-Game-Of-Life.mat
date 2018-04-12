@@ -1,0 +1,11 @@
+clear
+n=50;
+GRID=round(.6*rand(n,n));
+up=[2:n 1]; 
+down=[n 1:n-1]; 
+colormap(gray(2));
+for i=1:100
+    neighbours=GRID(up,up)+GRID(up,down)+GRID(down,up)+GRID(down,down)+ GRID(up,:)+GRID(down,:)+GRID(:,up)+GRID(:,down);
+    GRID = neighbours==3 | GRID & neighbours==2;
+    image(GRID*2); pause(0.02);
+end

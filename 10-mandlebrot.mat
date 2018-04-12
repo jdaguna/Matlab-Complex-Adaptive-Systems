@@ -1,0 +1,25 @@
+clear %clear all varaibles
+clf %clears the figure wwindows
+ 
+Mandlebrot = zeros(300,200); %set matrix 300 by 200 of zeroes 
+ 
+for Real=-2:.01:1, %real loop
+   for Imag=-1:.01:1, %imaginary loop
+       z=0; %set starting value to zero
+       zs=0; %sets zs to zero
+       c=Real+(Imag*1i); %complex number in iterative equation
+  
+       for n=1:100,
+           z=z.^2+c; %mandlebrot equation
+           zs(n)=z; %stores z in zs
+       end
+      
+       if max(abs(zs))<2, %checks that the z values are not going to infinity
+           Mandlebrot(round(Real*100+201), round(Imag*100+101))=1;
+       end
+       
+   end
+end
+colormap ([1 1 1; 0 0 0]) %gives mandlebrot the formal coloring (black and white)
+image([-2:.01:1], [1:-.01:-1], Mandlebrot'*2) %plots mandlebrot 
+axis equal

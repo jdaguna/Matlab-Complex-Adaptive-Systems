@@ -1,0 +1,15 @@
+clear all; %clears all variables
+ 
+for h=1:4000; %for loop where h goes from 1 to 4000
+x=0;%sets counter to 0
+y=rand;%sets iterated value to random number
+ 
+    for t=1:1000 %for loop, timestep goes from 1 to 1000
+        y=(h*.001)*y*(1-y);  %logistic map equation
+        if t>960,%if statement checks if timestep is greater than 960
+             x=x+1;%increment counter by 1
+             logM(h,x)=y; %saves y in matrix
+        end
+    end
+end
+plot([.001:.001:4],logM,'r.', 'MarkerSize',.5) %plots the matrix with all h and x columns
